@@ -61,7 +61,6 @@ const productObj = {
         document.onclick = function (e) {
             this.product_id = e.target.id;
             basketObj.basketAdd(+this.product_id, 1);
-            alert(+this.product_id);
         };
     }
 };
@@ -73,6 +72,8 @@ const basketObj = {
     basket: [],
 
     basketAdd(id, count) {
+        let flag = true;
+
         for (let i = 0; i < productObj.product.length; i++) {
             if (productObj.product[i]["id"] === id) {
                 if (this.basket.length === 0) {
@@ -84,14 +85,13 @@ const basketObj = {
                     for (let i = 0; i < this.basket.length; i++) {
                         if (this.basket[i]["id"] === id) {
                             this.basket[i]["count"] += 1;
+                            flag = false;
                         }
                     }
-                    for (let i = 0; i < this.basket.length; i++) {
-                        if (this.basket[i]["id"] !== id && (this.basket.length - 1 === i)) {
-                            let result = productObj.product[i];
-                            result["count"] = count;
-                            this.basket.push(result);
-                        }
+                    if (flag === true) {
+                        let result = productObj.product[i];
+                        result["count"] = count;
+                        this.basket.push(result);
                     }
                 }
             }
@@ -101,7 +101,6 @@ const basketObj = {
         this.clearBasket();
         this.basket = this.basketCopy;
         this.generate();
-        console.log(this.basket);
     },
 
     init() {
@@ -157,4 +156,3 @@ const basketObj = {
 
 productObj.init();
 basketObj.init();
-
